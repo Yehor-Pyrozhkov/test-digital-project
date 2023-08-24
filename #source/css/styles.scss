@@ -1,0 +1,861 @@
+@import "fonts";
+@import "default-preset";
+@import "anim";
+
+$white: #FFFFFF;
+
+$main-font-family: 'TT Hoves', sans-serif;
+$sub-font-family: 'SF Pro Display', sans-serif;
+
+$main-font-color: #333333;
+$sub-font-color: #BDBDBD;
+
+$main-fs: 32px;
+
+$anim-arrow-right: slide-out-right 1.5s ease-out infinite both;
+
+$maxWidth: 1920;
+$maxWidthContainer: 1440;
+
+@mixin adaptive-value($property, $startSize, $minSize, $type: 0, $maxWidthContainer: 1440) {
+  $addSize: $startSize - $minSize;
+
+  @if ($type == 1) {
+    #{$property}: $startSize + px;
+    @media (max-width: #{$maxWidthContainer + px}) {
+      #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidthContainer - 320}));
+    }
+  } @else if ($type == 2) {
+    #{$property}: $startSize + px;
+    @media (min-width: #{$maxWidthContainer + px}) {
+      #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidthContainer - 320}));
+    }
+  } @else {
+    #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidthContainer - 320}));
+  }
+}
+
+@mixin title-style {
+  @include adaptive-value("font-size", 48, 32);
+  font-weight: 300;
+  color: $sub-font-color;
+}
+
+@mixin link-btn-style($width: 224px, $height: 72px, $fz: 12px, $fw: 400) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: $width;
+  height: $height;
+  font-size: $fz;
+  font-weight: $fw;
+  font-style: normal;
+  text-decoration: none;
+  line-height: 12px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &-arrow {
+    margin-left: 12px;
+  }
+
+  &:hover &-arrow {
+    animation: $anim-arrow-right;
+  }
+}
+
+.wrapper {
+  font-family: $main-font-family;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section {
+  @include adaptive-value("width", 1170, 320);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $main-font-color;
+  height: 104px;
+
+  &-nav {
+    display: flex;
+    @include adaptive-value("gap", 60, 10);
+
+    &-link {
+      overflow: hidden;
+
+      &:before,
+      &:after {
+        position: relative;
+        z-index: 100;
+        background-color: $main-font-color;
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        transition: transform 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+        transform: scaleX(0);
+      }
+
+      &:before {
+        left: 0;
+        top: 0;
+        transform-origin: right;
+      }
+
+      &:after {
+        right: 0;
+        bottom: 0;
+        transform-origin: left;
+      }
+
+      &:hover:before {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      &:hover:after {
+        transform: scaleX(1);
+        transform-origin: right;
+      }
+    }
+  }
+
+  #burger {
+    display: none;
+
+    &:checked + .header-burger .header-burger-btn:before {
+      margin-top: 0;
+      transform: rotate(405deg);
+    }
+
+    &:checked + .header-burger .header-burger-btn:after {
+      margin-top: 0;
+      transform: rotate(-405deg);
+    }
+  }
+
+  &-burger {
+    display: none;
+    height: 100%;
+    width: 30px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &-btn,
+    &-btn:before,
+    &-btn:after {
+      display: block;
+      background-color: $main-font-color;
+      position: absolute;
+      height: 2px;
+      width: 30px;
+      transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    &-btn:before {
+      content: '';
+      margin-top: -8px;
+    }
+
+    &-btn:after {
+      content: '';
+      margin-top: 8px;
+    }
+
+  }
+}
+
+.blockhero {
+  display: flex;
+  justify-content: space-between;
+
+  &-title {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    @include adaptive-value("gap", 90, 10);
+    margin-top: 230px;
+
+    &-text {
+      @include adaptive-value("font-size", 44, 32, $type: 2, $maxWidthContainer: 700);
+      @include adaptive-value("line-height", 44, 32, $type: 2, $maxWidthContainer: 700);
+      @include title-style;
+      width: 280px;
+
+      &__focus {
+        font-weight: 700;
+        color: $main-font-color;
+      }
+    }
+
+    &-scroll {
+      display: flex;
+      justify-content: space-between;
+      width: 136px;
+      height: 56px;
+
+      &-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 56px;
+        height: 56px;
+        background-color: $white;
+        border: 1px solid #F2F2F2;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #F9F9F9;
+        }
+      }
+    }
+
+    &-page {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 144px;
+
+      &-num {
+        font-size: 0.75rem;
+        color: $sub-font-color;
+      }
+
+      &-slash {
+        width: 44px;
+        height: 2px;
+        background-color: #E0E0E0;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+  &-container {
+    @include adaptive-value("width", 770, 320);
+    @include adaptive-value("height", 830, 480);
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    background-image: url("../img/section/blockhero/blockhero-building.png");
+    background-size: cover;
+
+    &-link {
+      @include link-btn-style();
+      color: $main-font-color;
+      background-color: $white;
+
+      &:hover {
+        background-color: #F9F9F9;
+      }
+    }
+  }
+}
+
+.company {
+  @include adaptive-value("margin-top", 120, 40, $type: 1);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 435px;
+  background-color: #FBFBFB;
+  padding: 10px;
+  gap: 30px;
+
+  &-gallery {
+    @include adaptive-value("width", 570, 120);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    column-gap: 30px;
+    height: 465px;
+    margin-top: 30px;
+  }
+
+  &-title {
+    @include adaptive-value("width", 600, 320, $type: 1, $maxWidthContainer: 960);
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(251, 251, 251, 0.5);
+    gap: 20px;
+    padding: 10px;
+
+    &-text {
+      @include title-style;
+    }
+
+    &-subtext {
+      color: $main-font-color;
+      font-weight: 300;
+      @include adaptive-value("font-size", 16, 14);
+    }
+
+    &-link {
+      @include link-btn-style();
+      color: $main-font-color;
+      background-color: #FFFFFF;
+
+      &:hover {
+        background-color: #F9F9F9;
+      }
+    }
+  }
+}
+
+.goals {
+  @include adaptive-value("margin-top", 120, 20);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  &-title {
+    @include title-style;
+    align-self: flex-start;
+  }
+
+  &-cards {
+    @include adaptive-value("width", 1170, 320);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-item {
+      @include adaptive-value("margin-top", 40, 20);
+      @include adaptive-value("width", 570, 320);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 30px;
+      height: 80px;
+
+      &-number {
+        @include adaptive-value("font-size", 150, 100);
+        font-family: $sub-font-family;
+        color: #F2F2F2;
+        line-height: 0;
+      }
+
+      &-description {
+        @include adaptive-value("width", 450, 200);
+        @include adaptive-value("line-height", 24, 14, $type: 1);
+        font-weight: 400;
+        align-self: flex-start;
+      }
+    }
+  }
+}
+
+.projects {
+  @include adaptive-value("margin-top", 120, 20);
+  display: flex;
+  flex-direction: column;
+
+  &-title {
+    @include title-style;
+    align-self: flex-start;
+  }
+
+  &-cards {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+
+    $bgImg: (
+            item1: url("../img/section/projects/project-card1.png"),
+            item2: url("../img/section/projects/project-card2.png"),
+            item3: url("../img/section/projects/project-card3.png"),
+            item4: url("../img/section/projects/project-card4.png"),
+            item5: url("../img/section/projects/project-card5.png")
+    );
+
+    @each $item, $value in $bgImg {
+      &-#{$item} {
+        @include adaptive-value("margin-top", 40, 20);
+        @include adaptive-value("height", 255, 140);
+        background-image: #{$value};
+        background-size: cover;
+
+        &-caption {
+          @include adaptive-value("padding-left", 40, 10);
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          opacity: 0;
+          color: $white;
+          background-color: rgba(0, 0, 0, 1);
+
+          &-title {
+            @include adaptive-value("line-height", 48, 16);
+            text-transform: uppercase;
+            font-size: 3.5vw;
+            font-weight: 700;
+          }
+
+          &-link {
+            @include link-btn-style($width: 130px, $height: 24px);
+
+            &-arrow {
+              animation: $anim-arrow-right;
+            }
+          }
+        }
+
+        &:hover &-caption {
+          height: inherit;
+          opacity: 0.5;
+          transition: opacity 2s ease;
+        }
+      }
+    }
+
+    &-item1 {
+      @include adaptive-value("width", 570, 320);
+    }
+
+    &-item2 {
+      @include adaptive-value("width", 570, 320);
+    }
+
+    &-item3 {
+      @include adaptive-value("width", 270, 120);
+    }
+
+    &-item4 {
+      @include adaptive-value("width", 470, 320);
+    }
+
+    &-item5 {
+      @include adaptive-value("width", 370, 320);
+    }
+  }
+
+  &-link {
+    @include link-btn-style();
+    align-self: flex-end;
+    color: $white;
+    background-color: $main-font-color;
+    margin-top: 30px;
+  }
+}
+
+.contact {
+  @include adaptive-value("margin-top", 120, 20);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  &-title {
+    @include title-style;
+  }
+
+  &-form {
+    display: flex;
+    gap: 30px;
+
+    &-details {
+      display: flex;
+      flex-direction: column;
+
+      &-wrap {
+        position: relative;
+
+        &-input:not(&:first-child), &-textarea {
+          margin-top: 10px;
+        }
+
+        &-input {
+          @include adaptive-value("width", 640, 320);
+          display: block;
+          height: 44px;
+          background-color: #F3F3F3;
+          border: solid 1px #ccc;
+          transition: all .3s ease;
+          padding: 0 15px;
+          font-size: 16px;
+          font-weight: 400;
+
+          &:focus {
+            outline: none;
+            border-color: #333;
+            background-color: $white;
+          }
+        }
+
+        &-label {
+          position: absolute;
+          cursor: text;
+          z-index: 1;
+          top: 20px;
+          left: 10px;
+          font-size: 12px;
+          font-weight: 400;
+          background: transparent;
+          padding: 4px 10px;
+          color: #8D8D8D;
+          transition: all .3s ease
+        }
+
+        &-input:focus + &-label,
+        &-input:not(:placeholder-shown) + &-label {
+          outline: none;
+          font-size: 10px;
+          top: 0;
+          background-color: $white;
+          color: #8D8D8D;
+        }
+
+        &-input:not(:placeholder-shown) {
+          background-color: $white;
+        }
+
+        &-input:focus + &-label {
+          outline: none;
+          background-color: $white;
+          color: #333;
+        }
+
+        &-textarea {
+          @include adaptive-value("width", 640, 320);
+          display: block;
+          height: 148px;
+          background-color: #F3F3F3;
+          border: solid 1px #ccc;
+          transition: all .3s ease;
+          padding: 12px 15px;
+          font-size: 16px;
+          resize: none;
+
+          &:focus {
+            outline: none;
+            border-color: #333;
+            background-color: $white;
+          }
+        }
+
+        &-textarea:focus + &-label,
+        &-textarea:not(:placeholder-shown) + &-label {
+          outline: none;
+          font-size: 10px;
+          top: 0;
+          background-color: $white;
+          color: #8D8D8D;
+        }
+        &-textarea:not(:placeholder-shown) {
+          background-color: $white;
+        }
+
+        &-textarea:focus + &-label {
+          outline: none;
+          background-color: $white;
+          color: #333;
+        }
+
+        .asterisk {
+          color: red;
+        }
+      }
+    }
+
+    &-img {
+      height: 370px;
+    }
+  }
+
+  &-submit {
+    @include adaptive-value("width", 522, 320);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    &-agreement {
+      @include adaptive-value("width", 330, 280);
+      @include adaptive-value("font-size", 14, 12);
+      font-weight: 400;
+      color: $main-font-color;
+    }
+
+    &-btn {
+      @include link-btn-style();
+      background-color: $main-font-color;
+      color: $white;
+      align-self: flex-start;
+    }
+  }
+}
+
+.footer {
+  @include adaptive-value("margin-top", 120, 20);
+  @include adaptive-value("height", 420, 640);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  background-color: #2C2C2C;
+  font-family: $main-font-family;
+
+  &-contacts {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+
+
+    &-container {
+      @include adaptive-value("margin-top", 60, 20);
+      display: flex;
+      flex-direction: column;
+      align-items: self-start;
+      color: $white;
+
+      &-title {
+        @include adaptive-value("font-size", 16, 12);
+        font-weight: 700;
+      }
+
+      &-location,
+      &-links {
+        @include adaptive-value("font-size", 14, 10);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        font-weight: 500;
+        height: 230px;
+      }
+
+      &-location {
+
+        &-item {
+          display: flex;
+          align-items: flex-start;
+
+          & > img {
+            margin-top: 5px;
+          }
+        }
+        &-link {
+          margin-left: 14px;
+        }
+      }
+
+      &-social {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 200px;
+        margin-top: 30px;
+      }
+    }
+  }
+
+  &-hl {
+    background-color: rgba(100%, 100%, 100%, 10%);
+    margin-top: 60px;
+    width: 100%;
+    height: 1px;
+  }
+
+  &-copyright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+
+    &-text {
+      @include adaptive-value("font-size", 14, 12);
+      font-weight: 400;
+      color: rgba(200, 200, 200, 0.50);
+    }
+  }
+}
+
+@media (max-width: 1440px) {
+
+  .company {
+
+    &-gallery {
+
+      &-img__first {
+        @include adaptive-value("width", 270, 120);
+      }
+
+      &-img__second {
+        @include adaptive-value("width", 270, 120);
+      }
+
+      &-img__third {
+        @include adaptive-value("width", 270, 120);
+      }
+
+    }
+  }
+
+  .projects {
+
+    &-cards {
+      justify-content: space-around;
+
+      &-item3 {
+        order: 5;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+
+  .goals {
+
+    &-cards {
+      flex-direction: column;
+    }
+  }
+
+  .contact {
+    align-items: center;
+
+    &-title {
+      align-self: flex-start;
+    }
+
+    &-form {
+
+      &-img {
+        display: none;
+      }
+    }
+
+    &-submit {
+      align-self: flex-start;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+
+  .header {
+    justify-content: space-between;
+    background-color: #F9F9F9;
+    width: 100%;
+    padding: 0 32px;
+
+    &-nav {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-top: 70px;
+      background-color: #F9F9F9;
+      width: 100%;
+      gap: 0;
+
+      &-link {
+        margin: 0;
+        padding: 0.5em 0;
+        color: $main-font-color;
+      }
+    }
+
+    &-burger {
+      display: flex;
+    }
+
+    #burger {
+
+      & ~ .header-nav .header-nav-link {
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      &:checked ~ .header-nav .header-nav-link {
+        height: 2.5em;
+        padding: 0.5em;
+        transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+      }
+    }
+  }
+
+  .blockhero {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+
+    &-title {
+      align-items: center;
+      margin-top: 10px;
+
+      &-text {
+        font-size: $main-fs;
+        text-align: center;
+      }
+
+      &-scroll {
+        @include adaptive-value("width", 770, 300);
+      }
+
+      &-page {
+        @include adaptive-value("margin-top", -90, -50);
+      }
+    }
+  }
+
+  .company {
+    width: 100%;
+
+    &-gallery {
+      display: none;
+    }
+  }
+
+  .projects {
+
+    &-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .footer {
+
+    &-contacts {
+      flex-wrap: wrap;
+
+      &-container {
+
+        &:first-child {
+          width: 100%;
+          align-items: center;
+        }
+
+        &:last-child {
+          width: 100%;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
